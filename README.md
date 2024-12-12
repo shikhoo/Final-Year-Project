@@ -9,11 +9,9 @@ from tensorflow.keras.layers import Conv2D, MaxPooling2D, Flatten, Dense, Dropou
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from tensorflow.keras.callbacks import EarlyStopping
 
-# Common parameters
 img_width, img_height = 150, 150
 batch_size = 32
 
-# Define datasets
 datasets = {
     "flower": {
         "data_dir": "flower_dataset",
@@ -25,10 +23,8 @@ datasets = {
     }
 }
 
-# Store models in memory for reuse
 task_models = {}
 
-# Function to load data
 def load_data(task):
     data_dir = datasets[task]["data_dir"]
     datagen = ImageDataGenerator(
@@ -61,7 +57,6 @@ def load_data(task):
 
     return train_generator, validation_generator
 
-# Function to build the CNN model
 def build_model(num_classes):
     model = Sequential([
         Conv2D(32, (3, 3), activation='relu', input_shape=(img_width, img_height, 3)),
@@ -78,7 +73,6 @@ def build_model(num_classes):
     model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
     return model
 
-# Function to train or load a model
 def get_model(task):
     if task in task_models:
         print(f"Using loaded model for {datasets[task]['task_name']}.")
@@ -107,7 +101,6 @@ def get_model(task):
     task_models[task] = model  # Store the model in memory
     return model
 
-# Function to predict images in a loop
 def predict_images_in_loop(model, class_indices):
     while True:
         test_image_path = input("\nEnter the path of an image to predict (or type 'exit' to quit): ")
@@ -128,7 +121,6 @@ def predict_images_in_loop(model, class_indices):
         except Exception as e:
             print(f"Error processing image: {e}")
 
-# Main program
 def main():
     while True:
         print("\nSelect a task:")
